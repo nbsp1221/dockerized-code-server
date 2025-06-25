@@ -1,0 +1,30 @@
+# Environment files
+.env
+
+# Claude assistant files
+.claude/
+
+# Code-server data directory
+code-server/
+
+# Keep workspace structure but ignore content
+!code-server/workspace/
+code-server/workspace/*
+!code-server/workspace/README.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/

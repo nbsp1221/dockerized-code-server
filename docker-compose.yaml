@@ -1,0 +1,42 @@
+services:
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    restart: always
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Seoul
+      - PASSWORD=
+      - SUDO_PASSWORD=${SUDO_PASSWORD}
+      - PROXY_DOMAIN=${DOMAIN}
+      - DEFAULT_WORKSPACE=/config/workspace
+    volumes:
+      - ./code-server:/config
+    expose:
+      - "8443"
+    networks:
+      - code-server-network
+
+  caddy:
+    image: caddy:latest
+    container_name: code-server-caddy
+    restart: always
+    environment:
+      - DOMAIN=${DOMAIN}
+      - AUTH_USERNAME=${AUTH_USERNAME}
+      - AUTH_PASSWORD_HASH=${AUTH_PASSWORD_HASH}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    ports:
+      - "${HTTP_PORT}:80"
+      - "${HTTPS_PORT}:443"
+    depends_on:
+      - code-server
+    networks:
+      - code-server-network
+
+networks:
+  code-server-network:
+    name: code-server-network
+    driver: bridge

@@ -1,0 +1,14 @@
+{$DOMAIN} {
+    route {
+        # Service worker and static files bypass auth (CRITICAL)
+        @bypass path_regexp ^/stable-.*
+        reverse_proxy @bypass code-server:8443
+
+        # All other requests require Basic Auth
+        basic_auth {
+            {$AUTH_USERNAME} {$AUTH_PASSWORD_HASH}
+        }
+
+        reverse_proxy code-server:8443
+    }
+}
